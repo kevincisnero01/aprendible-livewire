@@ -14,8 +14,8 @@
     </head>
     <body>
 
-        <livewire:articles :title="2+2"/>
-
+        {{ $slot }}
+        
         @livewireScripts
     </body>
 </html>
