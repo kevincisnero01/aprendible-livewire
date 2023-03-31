@@ -7,9 +7,10 @@ use Livewire\Component;
 
 class Articles extends Component
 {
+    public $search = '';
     public function render()
     {
-        $articles = Article::all();
+        $articles = Article::where('name','like','%'.$this->search.'%')->get();
         return view('livewire.articles', [ 'articles' => $articles ]);
     }
 }
