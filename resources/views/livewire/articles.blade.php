@@ -1,10 +1,11 @@
 <div>
-    <h1>Lista de Articulos</h1>
+<div class="container mx-auto">
+    <h1 class="text-3xl font-bold underline">Lista de Articulos</h1>
 
-    <ul>
+    <ul class="list-disc">
         @foreach($articles as $article)
         <li>{{ $article->name }}</li>
         @endforeach
     </ul>
-
+</div>
 </div>
