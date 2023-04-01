@@ -14,6 +14,9 @@
         @vite('resources/css/app.css')
     </head>
     <body>
+        @if(session('status'))
+            <div class="px-8 py-2 m-auto border border-blue-300 bg-blue-200 rounded w-1/2 text-center">{{ session('status') }} </div>
+        @endif
 
         {{ $slot }}
         

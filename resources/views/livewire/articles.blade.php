@@ -1,6 +1,7 @@
 <div>
-<div class="container mx-auto">
+<div class="container mx-auto py-4 px-8">
     <h1 class="text-3xl font-bold underline">Lista de Articulos</h1>
+    
 
     <input 
         wire:model="search" 
@@ -9,9 +10,11 @@
         placeholder="Buscar..."
     >
 
-    <ul class="list-disc">
+    <a class="px-4 py-1 bg-gray-200 rounded hover:bg-gray-300" href="{{ route('articles.create') }}" >Crear Articulo</a>
+    
+    <ul class="list-disc list-inside">
         @foreach($articles as $article)
-        <li>{{ $article->name }}</li>
+        <li>{{ $article->title }}</li>
         @endforeach
     </ul>
 </div>
