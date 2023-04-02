@@ -7,24 +7,28 @@ use Livewire\Component;
 
 class ArticleForm extends Component
 {
-    public $title;
-
-    public $content;
+    public Article $article;
 
     protected $rules = [
-        'title' => ['required', 'min:4'],
-        'content' => ['required']
+        'article.title' => ['required', 'min:4'],
+        'article.content' => ['required']
     ];
 
     public function updated($propertyName){
         $this->validateOnly($propertyName);
     }
     
+    public function mount(Article $article){
+        $this->article = $article;
+    }
+
     public function save()
     {
-        Article::create($this->validate());
+        $this->validate();
 
-        session()->flash('status','Registro Exitoso');
+        $this->article->save();
+
+        session()->flash('status','Artículo Guardado');
 
         $this->redirectRoute('articles.index');
     }

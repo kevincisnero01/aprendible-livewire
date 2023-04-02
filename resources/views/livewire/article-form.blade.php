@@ -7,13 +7,13 @@
 
     <form wire:submit.prevent="save">
         <label class="block my-4">
-            <input wire:model="title" type="text" placeholder="Titulo..." class="rounded">
-            @error('title') <div>{{ $message }}</div> @enderror
+            <input wire:model="article.title" type="text" placeholder="Titulo..." class="rounded">
+            @error('article.title') <div>{{ $message }}</div> @enderror
         </label>
 
         <label class="block my-4">
-            <textarea wire:model="content" placeholder="Contenido..." class="rounded"></textarea>
-            @error('content') <div>{{ $message }}</div> @enderror
+            <textarea wire:model="article.content" placeholder="Contenido..." class="rounded"></textarea>
+            @error('article.content') <div>{{ $message }}</div> @enderror
         </label>
 
         <button type="submit" class="px-4 py-1 bg-gray-200 rounded hover:bg-gray-300" >

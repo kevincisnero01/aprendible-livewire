@@ -18,6 +18,9 @@
                 <a href="{{ route('articles.show', $article) }}">
                     {{ $article->title }}
                 </a>
+                <a href="{{ route('articles.edit', $article) }}" class="px-2 underline text-blue-600 active:text-blue-800">
+                    Editar
+                </a>
             </li>
         @endforeach
     </ul>
