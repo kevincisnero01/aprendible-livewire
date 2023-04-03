@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Livewire;
 
+use App\Models\Article;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -11,9 +12,26 @@ class ArticleFormTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * A basic test example.
-     */
+    public function test_blade_template_is_wired_property(): void
+    {
+        Livewire::test('article-form')
+            ->assertSeeHtml('wire:submit.prevent="save"')
+            ->assertSeeHtml('wire:model="article.title"')
+            ->assertSeeHtml('wire:model="article.content"')
+        ;
+
+    }
+
+    public function test_article_form_render_properly(): void
+    {
+        $this->get(route('articles.create'))->assertSeeLivewire('article-form');
+
+        $article = Article::factory()->create();
+
+        $this->get(route('articles.edit',['article' => $article]))->assertSeeLivewire('article-form');
+
+    }
+
     public function test_can_create_new_articles(): void
     {
         Livewire::test('article-form')
@@ -30,6 +48,26 @@ class ArticleFormTest extends TestCase
         ]);
     }
 
+    public function test_can_updade_articles(): void
+    {
+        $article = Article::factory()->create();
+
+        Livewire::test('article-form',['article' => $article])
+            ->assertSet('article.title', $article->title)
+            ->assertSet('article.content', $article->content)
+            ->set('article.title', 'Articulo Nuevo')
+            ->call('save')
+            ->assertSessionHas('status')
+            ->assertRedirect(route('articles.index'))
+        ;
+
+        $this->assertDatabaseCount('articles', 1);
+
+        $this->assertDatabaseHas('articles',[
+            'title' => 'Articulo Nuevo'
+        ]);
+    }
+
     public function test_title_is_required(): void
     {
         Livewire::test('article-form')
@@ -37,6 +75,7 @@ class ArticleFormTest extends TestCase
             ->set('article.content','Contenido de Articulo')
             ->call('save')
             ->assertHasErrors('article.title')
+            ->assertSeeHtml(__('validation.required',['attribute' => 'title']))
         ;
     }
 
