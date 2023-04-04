@@ -12,6 +12,11 @@
         </label>
 
         <label class="block my-4">
+            <input wire:model="article.slug" type="text" placeholder="URL Amigable..." class="rounded">
+            @error('article.slug') <div>{{ $message }}</div> @enderror
+        </label>
+
+        <label class="block my-4">
             <textarea wire:model="article.content" placeholder="Contenido..." class="rounded"></textarea>
             @error('article.content') <div>{{ $message }}</div> @enderror
         </label>
