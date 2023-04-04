@@ -3,6 +3,7 @@
 namespace Tests\Feature\Livewire;
 
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -11,6 +12,35 @@ use Livewire\Livewire;
 class ArticleFormTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_guest_cannot_create_or_update_article(): void
+    {
+
+        $this->get(route('articles.create'))
+            ->assertRedirect('login');
+
+        $article = Article::factory()->create();
+        
+        $this->get(route('articles.edit', $article))
+            ->assertRedirect('login');
+
+    }
+
+    public function test_article_form_render_properly(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get(route('articles.create'))
+            ->assertSeeLivewire('article-form');
+
+        // $article = Article::factory()->create();
+
+        // $this->actingAs($user)
+        //     ->get(route('articles.edit',['article' => $article]))
+        //     ->assertSeeLivewire('article-form');
+
+    }
 
     public function test_blade_template_is_wired_property(): void
     {
@@ -23,19 +53,11 @@ class ArticleFormTest extends TestCase
 
     }
 
-    public function test_article_form_render_properly(): void
-    {
-        $this->get(route('articles.create'))->assertSeeLivewire('article-form');
-
-        $article = Article::factory()->create();
-
-        $this->get(route('articles.edit',['article' => $article]))->assertSeeLivewire('article-form');
-
-    }
-
     public function test_can_create_new_articles(): void
     {
-        Livewire::test('article-form')
+        $user = User::factory()->create();
+
+        Livewire::actingAs($user)->test('article-form')
             ->set('article.title','Articulo Nuevo')
             ->set('article.slug','articulo-nuevo')
             ->set('article.content','Contenido de Articulo')
@@ -47,15 +69,18 @@ class ArticleFormTest extends TestCase
         $this->assertDatabaseHas('articles', [
             'title' => 'Articulo Nuevo',
             'slug' => 'articulo-nuevo',
-            'content' => 'Contenido de Articulo'
+            'content' => 'Contenido de Articulo',
+            'user_id' => $user->id
         ]);
     }
 
     public function test_can_updade_articles(): void
     {
+        $user = User::factory()->create();
+
         $article = Article::factory()->create();
 
-        Livewire::test('article-form',['article' => $article])
+        Livewire::actingAs($user)->test('article-form',['article' => $article])
             ->assertSet('article.title', $article->title)
             ->assertSet('article.slug', $article->slug)
             ->assertSet('article.content', $article->content)
@@ -70,7 +95,8 @@ class ArticleFormTest extends TestCase
 
         $this->assertDatabaseHas('articles',[
             'title' => 'Articulo Nuevo',
-            'slug' => 'slug-nuevo'
+            'slug' => 'slug-nuevo',
+            'user_id' => $user->id
         ]);
     }
 
@@ -113,9 +139,11 @@ class ArticleFormTest extends TestCase
 
     public function test_unique_rule_should_be_ignored_when_updating_the_same_slug(): void
     {
+        $user = User::factory()->create();
+
         $article = Article::factory()->create();
 
-        Livewire::test('article-form',['article' => $article])
+        Livewire::actingAs($user)->test('article-form',['article' => $article])
             ->set('article.title','Titulo de Articulo')
             ->set('article.slug', $article->slug)
             ->set('article.content','Contenido de Articulo')

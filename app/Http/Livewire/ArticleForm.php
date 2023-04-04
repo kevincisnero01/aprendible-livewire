@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Article;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Illuminate\Support\Str;
@@ -40,7 +41,8 @@ class ArticleForm extends Component
     {
         $this->validate();
 
-        $this->article->save();
+        //auth()->user()
+        Auth::user()->articles()->save($this->article);
 
         session()->flash('status','Artículo Guardado');
 
