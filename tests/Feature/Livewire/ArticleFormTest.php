@@ -124,6 +124,27 @@ class ArticleFormTest extends TestCase
         ;
     }
 
+    public function test_slug_must_only_contain_letters_numbers_dashes(): void
+    {
+
+        Livewire::test('article-form')
+            ->set('article.title','Titulo de Articulo')
+            ->set('article.slug', 'titulo-de-articulo%$!(' )
+            ->set('article.content','Contenido de Articulo')
+            ->call('save')
+            ->assertHasErrors(['article.slug' => 'alpha_dash'])
+            ->assertSeeHtml(__('validation.alpha_dash',['attribute' => 'slug']))
+        ;
+    }
+
+    public function test_slug_is_generated_automatically(): void
+    {
+        Livewire::test('article-form')
+            ->set('article.title','Articulo Nuevo')
+            ->assertSet('article.slug','articulo-nuevo')
+        ;
+    }
+
     public function test_title_must_be_4_characters_min(): void
     {
         Livewire::test('article-form')
@@ -169,4 +190,6 @@ class ArticleFormTest extends TestCase
             ->assertHasNoErrors('article.content')
         ;
     }
+
+
 }
