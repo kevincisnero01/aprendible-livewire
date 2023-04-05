@@ -34,11 +34,11 @@ class ArticleFormTest extends TestCase
             ->get(route('articles.create'))
             ->assertSeeLivewire('article-form');
 
-        // $article = Article::factory()->create();
+        $article = Article::factory()->create();
 
-        // $this->actingAs($user)
-        //     ->get(route('articles.edit',['article' => $article]))
-        //     ->assertSeeLivewire('article-form');
+        $this->actingAs($user)
+            ->get(route('articles.edit',['article' => $article]))
+            ->assertSeeLivewire('article-form');
 
     }
 

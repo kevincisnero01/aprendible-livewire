@@ -11,10 +11,10 @@ class Articles extends Component
 
     public function render()
     {
-        $articles = Article::where('title','like','%'.$this->search.'%')->latest()->get();
-        
         return view('livewire.articles', [ 
-            'articles' => $articles 
-        ]);
+            'articles' => Article::where(
+                'title','like',"%$this->search%"
+            )->latest()->get()
+        ])->layout('layouts.guest');
     }
 }
