@@ -29,14 +29,14 @@
                 <x-label for="slug" :value="__('Slug')" />
                 <x-input wire:model="article.slug" id="slug" type="text" class="mt-1 block w-full"/>
                 <x-input-error for="article.slug" class="mt-1"/>
-            </div>
+            </div>  
 
             <div class="col-span-6 sm:col-span-4">
                 <x-label for="content" :value="__('Content')" />
-                <x-input-textarea wire:model="article.content" id="content" class="mt-1 block w-full"/>
+                <x-input-html-editor wire:model="article.content" id="content" class="mt-1 block w-full"/>
                 <x-input-error for="article.content" class="mt-1"/>
             </div>
-
+            
             <x-slot name="actions">
                 <x-button>
                     {{ __('Save') }}
