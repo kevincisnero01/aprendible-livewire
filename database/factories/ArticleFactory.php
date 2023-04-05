@@ -20,6 +20,7 @@ class ArticleFactory extends Factory
         $sentence = fake()->sentence(6,true);
         
         return [
+            'image' => 'defaul.jpg',
             'title' => $sentence,
             'slug' => Str::slug($sentence,'-'),
             'content' => fake()->paragraph(3,true),

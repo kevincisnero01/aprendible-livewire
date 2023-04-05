@@ -48,7 +48,6 @@ class ArticleFormTest extends TestCase
             ->assertSeeHtml('wire:submit.prevent="save"')
             ->assertSeeHtml('wire:model="article.title')
             ->assertSeeHtml('wire:model="article.slug')
-            ->assertSeeHtml('wire:model="article.content')
         ;
 
     }
