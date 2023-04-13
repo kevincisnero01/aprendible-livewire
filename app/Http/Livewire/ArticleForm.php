@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Article;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Illuminate\Support\Str;
@@ -19,7 +20,7 @@ class ArticleForm extends Component
 
     protected function rules(){
         return [
-            'image' => ['image','max:2048'],
+            'image' => [],
             'article.title' => ['required', 'min:4'],
             'article.slug' => [
                 'required',
@@ -47,13 +48,26 @@ class ArticleForm extends Component
     {
         $this->validate();
 
-        $this->article->image = $this->image->store('/','public');
+        if($this->image)
+        {
+            $this->article->image = $this->uploadImage();
+        }
 
         Auth::user()->articles()->save($this->article);
 
         session()->flash('status','Artículo Guardado');
 
         $this->redirectRoute('articles.index');
+    }
+
+    public function uploadImage()
+    {
+        if($oldImage = $this->article->image)
+        {
+            Storage::disk('public')->delete($oldImage);
+        }
+
+        return $this->image->store('/','public');
     }
 
     public function render()
