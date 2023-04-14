@@ -135,6 +135,44 @@ class ArticleFormTest extends TestCase
             ->assertMissing($oldImage);
     }
 
+    public function test_image_is_required(): void
+    {
+        Livewire::test('article-form')
+            ->set('image','')
+            ->set('article.title','Titulo de Articulo')
+            ->set('article.content','Contenido de Articulo')
+            ->call('save')
+            ->assertHasErrors('image')
+            ->assertSeeHtml(__('validation.required',['attribute' => 'image']))
+        ;
+    }
+
+    public function test_field_must_be_of_type_image(): void
+    {
+        Livewire::test('article-form')
+            ->set('image','string-not-allowed')
+            ->call('save')
+            ->assertHasErrors(['image' => 'image'])
+            ->assertSeeHtml(__('validation.image',['attribute' => 'image']))
+        ;
+    }
+
+    public function test_image_must_2mb_max(): void
+    {
+        Storage::fake('public');
+
+        $image = UploadedFile::fake()->image('post-image.png')->size(3000);
+
+        Livewire::test('article-form')
+            ->set('image', $image)
+            ->call('save')
+            ->assertHasErrors(['image' => 'max'])
+            ->assertSeeHtml(__('validation.max.file',[
+                'attribute' => 'image',
+                'max' => '2024',
+            ]));
+    }
+
     public function test_title_is_required(): void
     {
         Livewire::test('article-form')
