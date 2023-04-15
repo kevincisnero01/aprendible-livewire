@@ -21,7 +21,7 @@
             <div class="col-span-6 sm:col-span-4">
                 <x-select-image wire:model="image" :image="$image" :existing="$article->image"/>
                 <x-input-error for="image" class="mt-1"/>
-            </div>
+            </div> 
 
             <div class="col-span-6 sm:col-span-4">
                 <x-label for="title" :value="__('Titlte')" />
