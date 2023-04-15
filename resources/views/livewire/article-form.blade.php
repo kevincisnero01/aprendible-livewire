@@ -34,6 +34,12 @@
                 <x-input wire:model="article.slug" id="slug" type="text" class="mt-1 block w-full"/>
                 <x-input-error for="article.slug" class="mt-1"/>
             </div>  
+            
+            <div class="col-span-6 sm:col-span-4">
+                <x-label for="category_id" :value="__('Category')" />
+                <x-input-select wire:model="article.category_id" id="category_id" :options="$categories" :placeholder="__('Select Category')" class="mt-1 block w-full"/>
+                <x-input-error for="article.category_id" class="mt-1"/>
+            </div>  
 
             <div class="col-span-6 sm:col-span-4">
                 <x-label for="content" :value="__('Content')" />
