@@ -31,8 +31,11 @@ class ArticleForm extends Component
                 'alpha_dash',
                 Rule::unique('articles','slug')->ignore($this->article)
             ],
-            'article.category_id' => ['required'],
-            'article.content' => ['required']
+            'article.content' => ['required'],
+            'article.category_id' => [
+                'required',
+                Rule::exists('categories', 'id')
+            ],
         ];
     }
 
