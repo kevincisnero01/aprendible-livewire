@@ -21,6 +21,27 @@ class ArticleForm extends Component
 
     public $showCategoryModal = false;
 
+    public $newCategory;
+
+    public function openCategoryForm()
+    {
+        $this->newCategory = new Category();
+        $this->showCategoryModal = true;
+    }
+
+    public function closeCategoryForm()
+    {
+        $this->showCategoryModal = false;
+        $this->newCategory = null;
+    }
+
+    public function saveNewCategory()
+    {
+        $this->newCategory->save();
+        $this->article->category_id = $this->newCategory->id;
+        $this->closeCategoryForm();
+    }
+
     protected function rules(){
         return [
             'image' => [
@@ -38,6 +59,8 @@ class ArticleForm extends Component
                 'required',
                 Rule::exists('categories', 'id')
             ],
+            'newCategory.name' => [],
+            'newCategory.slug' => [],
         ];
     }
 
@@ -48,6 +71,11 @@ class ArticleForm extends Component
     public function updatedArticleTitle($title)
     {
         $this->article->slug = Str::slug($title);
+    }
+
+    public function updatedNewCategoryName($name)
+    {
+        $this->newCategory->slug = Str::slug($name);
     }
     
     public function mount(Article $article){

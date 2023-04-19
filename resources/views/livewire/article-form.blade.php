@@ -39,7 +39,7 @@
                 <x-label for="category_id" :value="__('Category')" />
                 <div class="flex gap-1 mt-1">
                     <x-input-select wire:model="article.category_id" id="category_id" :options="$categories" :placeholder="__('Select Category')" class="block w-full"/>
-                    <x-secondary-button class="!p-2.5" wire:click="$set('showCategoryModal', true)">
+                    <x-secondary-button class="!p-2.5" wire:click="openCategoryForm">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
@@ -65,13 +65,37 @@
     </div>
 </div>
 
-<x-dialog-modal wire:model="showCategoryModal">
-    <x-slot name="title">Modal Title</x-slot>
-    <x-slot name="content">Modal Content</x-slot>
-    <x-slot name="footer">
-        <x-secondary-button wire:click="$set('showCategoryModal',false)">
+<x-modal wire:model="showCategoryModal">
+<form wire:submit.prevent="saveNewCategory">
+    <div class="px-6 py-4">
+        <div class="text-lg font-medium text-gray-900">
+            {{ __('New Category') }}
+        </div>
+
+        <div class="mt-4 text-sm text-gray-600 space-y-3">
+            <div class="col-span-6 sm:col-span-4">
+                <x-label for="new-category-name" :value="__('Name')" />
+                <x-input wire:model="newCategory.name" id="new-category-name" type="text" class="mt-1 block w-full"/>
+                <x-input-error for="newCategory.name" class="mt-1"/>
+            </div>
+
+            <div class="col-span-6 sm:col-span-4">
+                <x-label for="new-category-slug" :value="__('Slug')" />
+                <x-input wire:model="newCategory.slug" id="new-category-slug" type="text" class="mt-1 block w-full"/>
+                <x-input-error for="newCategory.slug" class="mt-1"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-row gap-x-3 justify-end px-6 py-4 bg-gray-100 text-right">
+        <x-secondary-button wire:click="closeCategoryForm">
             Cancel
         </x-secondary-button>
-    </x-slot>
+        <x-button>
+            {{ __('Submit') }}
+        </x-button>
+    </div>
+</form>
 </x-dialog-modal>
-</div>
+
+</div><!--main element-->
