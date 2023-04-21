@@ -55,9 +55,11 @@
             </div>
             
             <x-slot name="actions">
+                @if($this->article->exists)
                 <x-danger-button class="mr-auto" wire:click="$set('showDeleteModal',true)">
                     {{ __('Delete') }}
                 </x-danger-button>
+                @endif
 
                 <x-button>
                     {{ __('Save') }}
@@ -69,6 +71,7 @@
     </div>
 </div>
 
+@if($this->article->exists)
 <x-confirmation-modal wire:model="showDeleteModal">
     <x-slot name="title">Are you sure?</x-slot>
     <x-slot name="content">Do you want to delete the article: <span class="font-bold underline">{{ $this->article->title }}</span> </x-slot>
@@ -77,6 +80,7 @@
         <x-danger-button wire:click="delete">{{ __('Confirm') }}</x-danger-button>
     </x-slot>
 </x-confirmation-modal>
+@endif
 
 <x-modal wire:model="showCategoryModal">
 <form wire:submit.prevent="saveNewCategory">

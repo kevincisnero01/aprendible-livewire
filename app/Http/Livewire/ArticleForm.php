@@ -104,7 +104,7 @@ class ArticleForm extends Component
 
         Auth::user()->articles()->save($this->article);
 
-        session()->flash('status','Artículo Guardado');
+        session()->flash('status', __('Saved Article'));
 
         $this->redirectRoute('articles.index');
     }
@@ -121,11 +121,15 @@ class ArticleForm extends Component
 
     public function delete()
     {
+        Storage::disk('public')->delete($this->article->image);
+        
         $this->article->delete();
 
-        $this->redirect('/');
+        session()->flash('status', __('Deleted Article '));
+
+        $this->redirectRoute('articles.index');
     }
-    
+
     public function render()
     {
         return view(
