@@ -26,5 +26,9 @@ class Article extends Model
     {
         return Storage::disk('public')->url($this->image);
     }
-
+    
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

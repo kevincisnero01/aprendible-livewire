@@ -33,12 +33,16 @@ class ArticleForm extends Component
     {
         $this->showCategoryModal = false;
         $this->newCategory = null;
+        $this->clearValidation('newCategory.*');
     }
 
     public function saveNewCategory()
     {
+        $this->validateOnly('newCategory.name');
+        $this->validateOnly('newCategory.slug');
+
         $this->newCategory->save();
-        $this->article->category_id = $this->newCategory->id;
+        $this->article->category_id = $this->newCategory->id; //accesibilidad
         $this->closeCategoryForm();
     }
 
@@ -59,8 +63,14 @@ class ArticleForm extends Component
                 'required',
                 Rule::exists('categories', 'id')
             ],
-            'newCategory.name' => [],
-            'newCategory.slug' => [],
+            'newCategory.name' => [
+                Rule::requiredIf($this->newCategory instanceof Category), 
+                Rule::unique('categories','name')
+            ],
+            'newCategory.slug' => [
+                Rule::requiredIf($this->newCategory instanceof Category), 
+                Rule::unique('categories','slug')
+            ],
         ];
     }
 
