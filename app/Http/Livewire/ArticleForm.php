@@ -20,6 +20,7 @@ class ArticleForm extends Component
     public $image;
 
     public $showCategoryModal = false;
+    public $showDeleteModal = false;
 
     public $newCategory;
 
@@ -118,6 +119,13 @@ class ArticleForm extends Component
         return $this->image->store('/','public');
     }
 
+    public function delete()
+    {
+        $this->article->delete();
+
+        $this->redirect('/');
+    }
+    
     public function render()
     {
         return view(
