@@ -24,6 +24,6 @@ class DatabaseSeeder extends Seeder
 
         Category::factory(3)->create();
 
-        Article::factory(10)->create();
+        Article::factory(100)->create();
     }
 }

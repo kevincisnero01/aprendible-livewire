@@ -25,8 +25,8 @@ class ArticleFactory extends Factory
             'title' => $sentence,
             'slug' => Str::slug($sentence,'-'),
             'content' => fake()->paragraph(3,true),
-            'user_id' => User::factory(),
-            'category_id' => Category::factory(),
+            'user_id' => User::all()->random()->id,
+            'category_id' => Category::all()->random()->id,
         ];
     }
 }
