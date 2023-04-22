@@ -56,9 +56,11 @@
             
             <x-slot name="actions">
                 @if($this->article->exists)
-                <x-danger-button class="mr-auto" wire:click="$set('showDeleteModal',true)">
-                    {{ __('Delete') }}
-                </x-danger-button>
+                    <livewire:article-delete-modal :article="$article">
+                        <x-danger-button class="mr-auto" wire:click="$emit('confirmArticleDeletion', {{ $article }}) ">
+                            {{ __('Delete') }}
+                        </x-danger-button>
+                    </livewire:article-delete-modal>
                 @endif
 
                 <x-button>
@@ -70,17 +72,6 @@
     </x-form-section>
     </div>
 </div>
-
-@if($this->article->exists)
-<x-confirmation-modal wire:model="showDeleteModal">
-    <x-slot name="title">Are you sure?</x-slot>
-    <x-slot name="content">Do you want to delete the article: <span class="font-bold underline">{{ $this->article->title }}</span> </x-slot>
-    <x-slot name="footer">
-        <x-button class="mr-2" wire:click="$set('showDeleteModal', false)" >{{ __('Cancel') }}</x-button>
-        <x-danger-button wire:click="delete">{{ __('Confirm') }}</x-danger-button>
-    </x-slot>
-</x-confirmation-modal>
-@endif
 
 <x-modal wire:model="showCategoryModal">
 <form wire:submit.prevent="saveNewCategory">
