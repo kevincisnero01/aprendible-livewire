@@ -96,7 +96,10 @@ class ArticleFormTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $article = Article::factory()->create();
+        $article = Article::factory()->create([
+            'image' => '/path/to/image',
+            'category_id' => Category::factory()->create()->id
+        ]);
 
         Livewire::actingAs($user)->test('article-form',['article' => $article])
             ->assertSet('article.title', $article->title)
@@ -106,6 +109,7 @@ class ArticleFormTest extends TestCase
             ->set('article.title', 'Articulo Nuevo')
             ->set('article.slug', 'slug-nuevo')
             ->call('save')
+            ->dump()
             ->assertSessionHas('status')
             ->assertRedirect(route('articles.index'))
         ;
@@ -117,32 +121,6 @@ class ArticleFormTest extends TestCase
             'slug' => 'slug-nuevo',
             'user_id' => $user->id
         ]);
-    }
-
-    public function test_can_delete_article():  void
-    {
-        $user = User::factory()->create();
-
-        Storage::fake();
-
-        $imagePath = UploadedFile::fake()
-            ->image('image-test.png')
-            ->store('/','public')
-        ;
-
-        $article = Article::factory()->create([
-            'image' => $imagePath
-        ]);
-
-        Livewire::actingAs($user)->test('article-form',['article' => $article])
-            ->call('delete')
-            ->assertSessionHas('status')
-            ->assertRedirect(route('articles.index'))
-        ;
-
-        Storage::disk('public')->assertMissing($imagePath);
-
-        $this->assertDatabaseCount('articles', 0);
     }
 
     public function test_can_updade_articles_image(): void

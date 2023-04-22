@@ -21,12 +21,12 @@ class ArticleFactory extends Factory
         $sentence = fake()->unique()->sentence();
         
         return [
-            //'image' => fake()->imageUrl(640,480,null),
+            'image' => fake()->imageUrl(640,480,null),
             'title' => $sentence,
             'slug' => Str::slug($sentence,'-'),
             'content' => fake()->paragraph(3,true),
-            'user_id' => User::all()->random()->id,
-            'category_id' => Category::all()->random()->id,
+            'user_id' => User::factory()->create(),
+            'category_id' => Category::factory()->create(),
         ];
     }
 }
