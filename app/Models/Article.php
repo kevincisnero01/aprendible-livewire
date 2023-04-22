@@ -24,7 +24,10 @@ class Article extends Model
     
     public function getImageUrlAttribute(): string
     {
-        return Storage::disk('public')->url($this->image);
+        return $this->image 
+            ? Storage::disk('public')->url($this->image) 
+            : "https://via.placeholder.com/640x480.png/6875F5/FFFFFFF?text=No Image"
+            ;
     }
     
     public function category()

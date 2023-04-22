@@ -18,10 +18,10 @@ class ArticleFactory extends Factory
      */
     public function definition(): array
     {
-        $sentence = fake()->sentence(6,true);
+        $sentence = fake()->unique()->sentence();
         
         return [
-            'image' => 'defaul.jpg',
+            //'image' => fake()->imageUrl(640,480,null),
             'title' => $sentence,
             'slug' => Str::slug($sentence,'-'),
             'content' => fake()->paragraph(3,true),
