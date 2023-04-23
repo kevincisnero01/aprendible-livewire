@@ -5,6 +5,7 @@ use App\Http\Livewire\ArticlesTable;
 use App\Http\Livewire\ArticleShow;
 use Illuminate\Support\Facades\Route;
 
+Route::view('/','home')->name('home');
 
 Route::get('/blog/{article}',ArticleShow::class)->name('articles.show');
 
