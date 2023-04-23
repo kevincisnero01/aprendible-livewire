@@ -28,8 +28,8 @@ class ArticleDeleteModal extends Component
         }
         
         $this->article->delete();
-
-        session()->flash('status', __('Deleted Article '));
+        session()->flash('flash.bannerStyle','danger');
+        session()->flash('flash.banner', __('Deleted Article '));
 
         $this->redirectRoute('articles.index');
     }

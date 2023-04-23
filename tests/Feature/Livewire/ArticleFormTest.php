@@ -76,7 +76,7 @@ class ArticleFormTest extends TestCase
             ->set('article.content','Contenido de Articulo')
             ->set('article.category_id', $category->id)
             ->call('save')
-            ->assertSessionHas('status')
+            ->assertSessionHas('flash.banner')
             ->assertRedirect(route('articles.index'))
         ;
 
